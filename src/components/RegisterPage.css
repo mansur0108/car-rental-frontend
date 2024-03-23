@@ -1,0 +1,64 @@
+.register-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.input-container {
+  position: relative;
+  margin: 5px;
+  width: 300px;
+}
+
+.register-input {
+  padding: 8px;
+  width: 100%; /* Make the input fill the container */
+  box-sizing: border-box; /* Include padding and border in the element's total width */
+  border-radius: 4px;
+  border: 1px solid #ccc; /* Adjust based on your design */
+}
+
+.register-button {
+  padding: 6px 12px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.register-button:hover {
+  background-color: #0056b3;
+}
+
+.show-password-button {
+  position: absolute;
+  right: 10px; /* Position inside the right end of the input container */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust for exact centering */
+  background: none;
+  border: none;
+  color: #007bff; /* Button color */
+  cursor: pointer;
+}
+
+.register-prompt {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.register-prompt a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.register-prompt a:hover {
+  text-decoration: underline;
+}
+
+.register-message {
+  color: red;
+  margin-top: 10px;
+}
