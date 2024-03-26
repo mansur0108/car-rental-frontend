@@ -14,10 +14,10 @@
 
 .login-input {
   padding: 8px;
-  width: 100%; /* Make the input fill the container */
-  box-sizing: border-box; /* Include padding and border in the element's total width */
+  width: 100%;
+  box-sizing: border-box;
   border-radius: 4px;
-  border: 1px solid #ccc; /* Adjust based on your design */
+  border: 1px solid #ccc;
 }
 
 .login-button {
@@ -27,6 +27,7 @@
   color: white;
   border: none;
   border-radius: 5px;
+  margin: 5px;
 }
 
 .login-button:hover {
@@ -35,12 +36,12 @@
 
 .show-password-button {
   position: absolute;
-  right: 10px; /* Position inside the right end of the input container */
-  top: 50%; /* Center vertically */
-  transform: translateY(-50%); /* Adjust for exact centering */
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
-  color: #007bff; /* Button color */
+  color: #007bff;
   cursor: pointer;
 }
 
@@ -61,4 +62,11 @@
 .login-message {
   color: red;
   margin-top: 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }

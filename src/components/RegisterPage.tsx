@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import './RegisterPage.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,10 @@ const RegisterPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [registerMessage, setRegisterMessage] = useState<string>('');
   const navigate = useNavigate();
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleRegister();
+  };
 
   const handleRegister = async () => {
     try {
@@ -18,6 +22,7 @@ const RegisterPage: React.FC = () => {
         {
           email,
           password,
+          uty: 0,
         }
       );
       console.log('Registration successful', response.data);
@@ -34,34 +39,36 @@ const RegisterPage: React.FC = () => {
 
   return (
     <div className='register-container'>
-      <div className='input-container'>
-        <input
-          type='email'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder='Email'
-          className='register-input'
-        />
-      </div>
-      <div className='input-container'>
-        <input
-          type={showPassword ? 'text' : 'password'}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder='Password'
-          className='register-input'
-        />
-        <button
-          onClick={() => setShowPassword(!showPassword)}
-          className='show-password-button'
-        >
-          {showPassword ? 'Hide' : 'Show'}
+      <form onSubmit={handleFormSubmit}>
+        <div className='input-container'>
+          <input
+            type='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder='Email'
+            className='register-input'
+          />
+        </div>
+        <div className='input-container'>
+          <input
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder='Password'
+            className='register-input'
+          />
+          <button
+            onClick={() => setShowPassword(!showPassword)}
+            type='button'
+            className='show-password-button'
+          >
+            {showPassword ? 'Hide' : 'Show'}
+          </button>
+        </div>
+        <button onClick={handleRegister} className='register-button'>
+          Register
         </button>
-      </div>
-      <button onClick={handleRegister} className='register-button'>
-        Register
-      </button>
-
+      </form>
       {registerMessage && (
         <div className='register-message'>{registerMessage}</div>
       )}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import './LoginPage.css';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -9,6 +9,10 @@ const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginMessage, setLoginMessage] = useState<string>('');
   const navigate = useNavigate();
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleLogin();
+  };
 
   const handleLogin = async () => {
     try {
@@ -33,33 +37,36 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className='login-container'>
-      <div className='input-container'>
-        <input
-          type='email'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder='Email'
-          className='login-input'
-        />
-      </div>
-      <div className='input-container'>
-        <input
-          type={showPassword ? 'text' : 'password'}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder='Password'
-          className='login-input'
-        />
-        <button
-          onClick={() => setShowPassword(!showPassword)}
-          className='show-password-button'
-        >
-          {showPassword ? 'Hide' : 'Show'}
+      <form onSubmit={handleFormSubmit}>
+        <div className='input-container'>
+          <input
+            type='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder='Email'
+            className='login-input'
+          />
+        </div>
+        <div className='input-container'>
+          <input
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder='Password'
+            className='login-input'
+          />
+          <button
+            onClick={() => setShowPassword(!showPassword)}
+            type='button'
+            className='show-password-button'
+          >
+            {showPassword ? 'Hide' : 'Show'}
+          </button>
+        </div>
+        <button onClick={handleLogin} className='login-button'>
+          Login
         </button>
-      </div>
-      <button onClick={handleLogin} className='login-button'>
-        Login
-      </button>
+      </form>
       {loginMessage && <div className='login-message'>{loginMessage}</div>}
       <div className='register-prompt'>
         Don't have an account? <Link to='/register'>Register</Link>
