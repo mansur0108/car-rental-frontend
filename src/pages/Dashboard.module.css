@@ -1,0 +1,5 @@
+.search {
+  border-radius: 10px;
+  box-shadow: var(--mantine-shadow-sm);
+  padding: 1rem;
+}
