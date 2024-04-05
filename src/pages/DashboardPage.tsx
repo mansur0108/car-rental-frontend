@@ -17,7 +17,8 @@ const DashboardPage: React.FC = () => {
   const [returnValue, setReturn] = useState<Date | null>(null);
   return (
     <MantineProvider>
-      <Header />
+      <Header /> {/* Display the page header */}
+      {/* Overlay image as the dashboard background */}
       <Box className={classes.imageOverlay}>
         <Image
           src='https://images.unsplash.com/photo-1575147144179-7e23d752d8a9?q=80&w=1933&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
@@ -25,18 +26,21 @@ const DashboardPage: React.FC = () => {
           h={600}
         ></Image>
       </Box>
+      {/* Container for the search functionality */}
       <Container style={{ paddingTop: '60px' }} fluid>
+        {/* Inner container with custom styles for search inputs and button */}
         <Container className={classes.search} fluid>
           <Flex
             className={classes.customFlex}
-            direction={{ base: 'column', sm: 'row' }}
-            justify='center'
-            gap={{ base: 'sm', sm: 'lg' }}
+            direction={{ base: 'column', sm: 'row' }} // column in mobile view, row in wider screens
+            justify='center' // center the flex items horizontally
+            gap={{ base: 'sm', sm: 'lg' }} // Spacing
             align={{
               base: 'stretch',
               sm: 'flex-end',
             }}
           >
+            {/* Location selection dropdown */}
             <Select
               label='Location'
               placeholder='Choose'
@@ -45,6 +49,7 @@ const DashboardPage: React.FC = () => {
               nothingFoundMessage='Nothing found...'
               size='lg'
             />
+            {/* Car class selection dropdown */}
             <Select
               label='Class'
               placeholder='Choose'
@@ -53,6 +58,7 @@ const DashboardPage: React.FC = () => {
               nothingFoundMessage='Nothing found...'
               size='lg'
             />
+            {/* Pickup date input */}
             <DateInput
               value={pickupValue}
               onChange={setPickup}
@@ -60,6 +66,7 @@ const DashboardPage: React.FC = () => {
               placeholder='Date input'
               size='lg'
             />
+            {/* Return date input */}
             <DateInput
               value={returnValue}
               onChange={setReturn}
@@ -67,6 +74,7 @@ const DashboardPage: React.FC = () => {
               placeholder='Date input'
               size='lg'
             />
+            {/* Search button to trigger the search functionality not implemented yet*/}
             <Button className={classes.button} size='lg'>
               Search
             </Button>

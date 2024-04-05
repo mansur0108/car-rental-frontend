@@ -5,11 +5,14 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const RegisterPage: React.FC = () => {
+  // State hooks for managing form inputs and register message
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [registerMessage, setRegisterMessage] = useState<string>('');
   const navigate = useNavigate();
+
+  // handle form submission
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleRegister();
@@ -17,6 +20,7 @@ const RegisterPage: React.FC = () => {
 
   const handleRegister = async () => {
     try {
+      // Attempt to register using the API
       const response = await axios.post(
         'http://localhost:3000/api/v1/user/register',
         {
@@ -26,7 +30,7 @@ const RegisterPage: React.FC = () => {
         }
       );
       console.log('Registration successful', response.data);
-      navigate('/');
+      navigate('/'); // Navigate to login page upon successful registration
     } catch (error) {
       let errorMessage = 'An unexpected error occurred';
       if (axios.isAxiosError(error) && error.response) {

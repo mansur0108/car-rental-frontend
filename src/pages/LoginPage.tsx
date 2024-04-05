@@ -4,11 +4,14 @@ import './LoginPage.css';
 import { Link, useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
+  // State hooks for managing form inputs and login message
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [loginMessage, setLoginMessage] = useState<string>('');
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState<boolean>(false); // To toggle password visibility
+  const [loginMessage, setLoginMessage] = useState<string>(''); // To show login success or error messages
+  const navigate = useNavigate(); // Hook for route navigation
+
+  // Handles form submission
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleLogin();
@@ -16,6 +19,7 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = async () => {
     try {
+      // Attempt to login using the API
       const response = await axios.post(
         'http://localhost:3000/api/v1/user/login',
         {
@@ -24,8 +28,9 @@ const LoginPage: React.FC = () => {
         }
       );
       console.log('Login successful', response.data);
-      navigate('/dashboard');
+      navigate('/dashboard'); // Navigate to dashboard on successful login
     } catch (error) {
+      // Handle login error
       let errorMessage = 'An unexpected error occurred';
       if (axios.isAxiosError(error) && error.response) {
         console.error('Login failed', error.response.data);
@@ -35,6 +40,7 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  // Render login form
   return (
     <div className='login-container'>
       <form onSubmit={handleFormSubmit}>
