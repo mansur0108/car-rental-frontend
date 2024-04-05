@@ -4,17 +4,19 @@
 
 .search {
   position: absolute;
-  top: 255px;
+  top: 550px;
   left: 50%;
   transform: translateX(-50%);
-  width: 90%;
+  width: 60%;
   z-index: 1;
   border-radius: 10px;
   background-color: white;
   box-shadow: var(--mantine-shadow-sm);
-  padding: 15px;
+  padding: 25px;
 }
 
 .button {
   padding: 0 20px;
+  min-width: 100px;
+  flex-shrink: 0;
 }
