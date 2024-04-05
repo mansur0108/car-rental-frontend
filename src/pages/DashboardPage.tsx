@@ -5,15 +5,27 @@ import {
   Button,
   Flex,
   Select,
+  Image,
+  Box,
 } from '@mantine/core';
+import { Header } from '../components/Header';
 import { DateInput } from '@mantine/dates';
 import classes from './Dashboard.module.css';
 
 const DashboardPage: React.FC = () => {
-  const [value, setValue] = useState<Date | null>(null);
+  const [pickupValue, setPickup] = useState<Date | null>(null);
+  const [returnValue, setReturn] = useState<Date | null>(null);
   return (
     <MantineProvider>
-      <Container>
+      <Header />
+      <Box className={classes.imageOverlay}>
+        <Image
+          src='https://images.unsplash.com/photo-1575147144179-7e23d752d8a9?q=80&w=1933&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+          radius='sm'
+          h={300}
+        ></Image>
+      </Box>
+      <Container style={{ paddingTop: '60px' }} fluid>
         <Container className={classes.search} fluid>
           <Flex
             direction={{ base: 'column', sm: 'row' }}
@@ -32,19 +44,25 @@ const DashboardPage: React.FC = () => {
               nothingFoundMessage='Nothing found...'
             />
             <Select
-              label='Make'
+              label='Class'
               placeholder='Choose'
-              data={['All', 'Toyota', 'Nissan', 'Honda']}
+              data={['All', 'Compact', 'Midsize', 'Standard']}
               searchable
               nothingFoundMessage='Nothing found...'
             />
             <DateInput
-              value={value}
-              onChange={setValue}
-              label='Date input'
+              value={pickupValue}
+              onChange={setPickup}
+              label='Pick-up'
               placeholder='Date input'
             />
-            <Button>Search</Button>
+            <DateInput
+              value={returnValue}
+              onChange={setReturn}
+              label='Return'
+              placeholder='Date input'
+            />
+            <Button className={classes.button}>Search</Button>
           </Flex>
         </Container>
       </Container>
