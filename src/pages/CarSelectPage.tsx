@@ -14,17 +14,19 @@ const CarSelectPage: React.FC = () => {
   return (
     <MantineProvider>
       <Header />
-      <Grid justify='space-around'>
-        <Grid.Col style={{ maxWidth: 350 }} span={{ sm: 4, xs: 4 }}>
-          <FeaturesCard />
-        </Grid.Col>
-        <Grid.Col style={{ maxWidth: 350 }} span={{ sm: 4, xs: 4 }}>
-          <FeaturesCard />
-        </Grid.Col>
-        <Grid.Col style={{ maxWidth: 350 }} span={{ sm: 4, xs: 4 }}>
-          <FeaturesCard />
-        </Grid.Col>
-      </Grid>
+      <Container style={{ paddingTop: '100px' }}>
+        <Grid justify='space-around'>
+          <Grid.Col style={{ maxWidth: 350 }} span={{ sm: 4, xs: 4 }}>
+            <FeaturesCard />
+          </Grid.Col>
+          <Grid.Col style={{ maxWidth: 350 }} span={{ sm: 4, xs: 4 }}>
+            <FeaturesCard />
+          </Grid.Col>
+          <Grid.Col style={{ maxWidth: 350 }} span={{ sm: 4, xs: 4 }}>
+            <FeaturesCard />
+          </Grid.Col>
+        </Grid>
+      </Container>
     </MantineProvider>
   );
 };
