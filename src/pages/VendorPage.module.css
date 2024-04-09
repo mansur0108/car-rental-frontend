@@ -1,0 +1,17 @@
+div.formD {
+	background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    padding: 10px 20px;
+    transition: transform 0.2s;
+    width: 500px;
+    text-align: center;
+    margin: auto;
+    margin-top: 20px;
+}
+
+h1.formH {
+	font-size: x-large;
+	text-align: center;
+    color: #FA8072;
+}
