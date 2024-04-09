@@ -7,16 +7,30 @@ import {
 } from '@tabler/icons-react';
 import classes from './FeaturesCard.module.css';
 
-const mockdata = [
-  { label: '4 passengers', icon: IconUsers },
-  { label: '100 km/h in 4 seconds', icon: IconGauge },
-  { label: 'Automatic gearbox', icon: IconManualGearbox },
-  { label: 'Electric', icon: IconGasStation },
-];
+interface Vehicle {
+  uid: number;
+  make: string;
+  model: string;
+  year: number;
+  axles: number;
+  doors: number;
+  bodyType: string;
+  rentCostPerDay: number;
+  color: string;
+  isRented: boolean;
+}
 
-export function FeaturesCard() {
-  const features = mockdata.map((feature) => (
-    <Center key={feature.label}>
+interface FeaturesCardProps {
+  vehicle: Vehicle;
+}
+
+export function FeaturesCard({ vehicle }: FeaturesCardProps) {
+  const features = [
+    { label: `${vehicle.doors} doors`, icon: IconUsers },
+    { label: vehicle.bodyType, icon: IconManualGearbox },
+    // Add more features
+  ].map((feature, index) => (
+    <Center key={index}>
       <feature.icon size='1.05rem' className={classes.icon} stroke={1.5} />
       <Text size='xs'>{feature.label}</Text>
     </Center>
@@ -24,18 +38,16 @@ export function FeaturesCard() {
 
   return (
     <Card withBorder radius='md' className={classes.card}>
-      <Card.Section className={classes.imageSection}>
-        <Image src='https://i.imgur.com/ZL52Q2D.png' alt='Tesla Model S' />
-      </Card.Section>
-
       <Group justify='space-between' mt='md'>
         <div>
-          <Text fw={500}>Tesla Model S</Text>
+          <Text fw={500}>
+            {vehicle.make}
+            {vehicle.model}
+          </Text>
           <Text fz='xs' c='dimmed'>
-            Free recharge at any station
+            Random Text
           </Text>
         </div>
-        <Badge variant='outline'>25% off</Badge>
       </Group>
 
       <Card.Section className={classes.section} mt='md'>

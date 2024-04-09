@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   MantineProvider,
   Container,
@@ -11,10 +12,43 @@ import {
 import { Header } from '../components/Header';
 import { DateInput } from '@mantine/dates';
 import classes from './Dashboard.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const DashboardPage: React.FC = () => {
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+  const [locations, setLocations] = useState<
+    Array<{ value: string; label: string }>
+  >([]);
   const [pickupValue, setPickup] = useState<Date | null>(null);
   const [returnValue, setReturn] = useState<Date | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Function to fetch locations from the backend
+    const fetchLocations = async () => {
+      try {
+        const response = await axios.get('/api/v1/location');
+        // Assuming the response contains an array of locations
+        // and each location has an 'uid' and 'address' property
+        const locationOptions = response.data.map((loc: any) => ({
+          value: loc.uid.toString(),
+          label: loc.address,
+        }));
+        setLocations(locationOptions);
+      } catch (error) {
+        console.error('Failed to fetch locations', error);
+      }
+    };
+
+    fetchLocations();
+  }, []);
+
+  const handleSearch = () => {
+    navigate('/selection', { state: { location: selectedLocation } });
+  };
+  const handleLocationChange = (value: string | null) => {
+    setSelectedLocation(value);
+  };
   return (
     <MantineProvider>
       <Header /> {/* Display the page header */}
@@ -44,7 +78,9 @@ const DashboardPage: React.FC = () => {
             <Select
               label='Location'
               placeholder='Choose'
-              data={['test1', 'test2', 'test3']}
+              value={selectedLocation}
+              onChange={(value) => handleLocationChange(value)}
+              data={locations}
               searchable
               nothingFoundMessage='Nothing found...'
               size='lg'
@@ -75,7 +111,7 @@ const DashboardPage: React.FC = () => {
               size='lg'
             />
             {/* Search button to trigger the search functionality not implemented yet*/}
-            <Button className={classes.button} size='lg'>
+            <Button className={classes.button} size='lg' onClick={handleSearch}>
               Search
             </Button>
           </Flex>

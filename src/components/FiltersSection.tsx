@@ -18,20 +18,34 @@ const FiltersSection = () => {
       <Title order={2}>Filters</Title>
       <Divider my='sm' />
 
-      <Title order={5}>Vehicle Type</Title>
+      <Title order={5} style={{ marginBottom: '10px' }}>
+        Vehicle Type
+      </Title>
       <SpacedCheckbox label='Cars' value='cars' />
       <SpacedCheckbox label='SUVs' value='suvs' />
       <SpacedCheckbox label='Trucks' value='trucks' />
       <SpacedCheckbox label='Vans' value='vans' />
       <Divider my='sm' />
 
-      <Title order={5}>Seats</Title>
+      <Title order={5} style={{ marginBottom: '10px' }}>
+        Vehicle Type
+      </Title>
+      <SpacedCheckbox label='Compact' value='compact' />
+      <SpacedCheckbox label='Midsize' value='midsize' />
+      <SpacedCheckbox label='Standard' value='standard' />
+      <Divider my='sm' />
+
+      <Title order={5} style={{ marginBottom: '10px' }}>
+        Seats
+      </Title>
       <SpacedCheckbox label='2+' value='2' />
       <SpacedCheckbox label='4+' value='4' />
       <SpacedCheckbox label='5+' value='5' />
       <Divider my='sm' />
 
-      <Title order={5}>Fuel Type</Title>
+      <Title order={5} style={{ marginBottom: '10px' }}>
+        Fuel Type
+      </Title>
       <SpacedCheckbox label='Gas' value='gas' />
       <SpacedCheckbox label='Electric' value='electric' />
       <SpacedCheckbox label='Hybrid' value='hybrid' />
