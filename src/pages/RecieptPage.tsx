@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import styles from './VendorPage.module.css';
+import styles from './RecieptPage.module.css';
 
-export default function VendorPage() {
+export default function RecieptPage() {
   // Constants
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
