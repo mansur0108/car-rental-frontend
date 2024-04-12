@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import styles from './VendorPage.module.css';
 
-export default function Form() {
+export default function VendorPage() {
   // Constants
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [contact, setContact] = useState('');
   const [fuel, setFuel] = useState('unleaded');
   const [address, setAddress] = useState('');
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOptionCar, setSelectedOptionCar] = useState('');
+  const [selectedOptionFuel, setSelectedOptionFuel] = useState('');
   const [fee, setFee] = useState(0);
   const [cond, setCondition] = useState('');
 
@@ -26,9 +27,11 @@ export default function Form() {
     setAddress('');
     setContact('');
     setFuel('unleaded');
-    setSelectedOption('');
+    setSelectedOptionCar('');
+	setSelectedOptionFuel('');
     setFee(0);
     setAddress('');
+	setCondition('');
   };
 
   //Render Vendor Page
@@ -82,43 +85,36 @@ export default function Form() {
             <select
               name='select'
               id='select'
-              value={selectedOption}
-              onChange={(e) => setSelectedOption(e.target.value)}
+              defaultValue="sedan"
+              onChange={(e) => setSelectedOptionCar(e.target.value)}
             >
               <option
-                value=''
-                disabled
-                selected={selectedOption === ''}
-              ></option>
+                value='sedan'
+              >Sedan</option>
+			  <option
+                value='suv'
+              >SUV</option>
+			  <option
+                value='truck'
+              >Truck</option>
             </select>
             <label htmlFor='fuel'>Fuel Type*</label>
-            <input
-              type='radio'
-              name='fuel'
-              value='electric'
-              id='electric'
-              checked={fuel === 'electric'}
-              onChange={(e) => setFuel(e.target.value)}
-            />
-            Electric
-            <input
-              type='radio'
-              name='fuel'
-              value='diesel'
-              id='diesel'
-              checked={fuel === 'diesel'}
-              onChange={(e) => setFuel(e.target.value)}
-            />
-            Diesel
-            <input
-              type='radio'
-              name='fuel'
-              value='unleaded'
-              id='unleaded'
-              checked={fuel === 'unleaded'}
-              onChange={(e) => setFuel(e.target.value)}
-            />
-            Unleaded
+            <select
+              name='select'
+              id='select'
+              defaultValue="gas"
+              onChange={(e) => setSelectedOptionFuel(e.target.value)}
+            >
+              <option
+                value='gas'
+              >Gas</option>
+			  <option
+                value='hybrid'
+              >Hybrid</option>
+			  <option
+                value='electric'
+              >Electric</option>
+            </select>
             <label htmlFor='fees'>Maintence Fees</label>
             <input
               type='number'
