@@ -21,7 +21,7 @@ type Vehicle = {
   make: string;
   model: string;
   year: number;
-  axles: number;
+  seats: number;
   doors: number;
   bodyType: string;
   rentCostPerDay: number;
@@ -35,6 +35,16 @@ const CarSelectPage: React.FC = () => {
   const { location: selectedLocation } = location.state as { location: string };
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [filterSeats, setFilterSeats] = useState<number | null>(null);
+  const [filterType, setFilterType] = useState<string | null>(null);
+
+  const handleTypeChange = (type: string | null) => {
+    setFilterType(type);
+  };
+
+  const handleSeatsChange = (seats: number | null) => {
+    setFilterSeats(seats);
+  };
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -43,7 +53,22 @@ const CarSelectPage: React.FC = () => {
           `http://localhost:3000/api/v1/location/${selectedLocation}/vehicles`,
           { withCredentials: true }
         );
-        setVehicles(response.data);
+        console.log(response.data);
+
+        const availableVehicles = response.data
+          .filter((vehicle: Vehicle) => !vehicle.isRented)
+          .filter((vehicle: Vehicle) =>
+            filterSeats ? vehicle.seats >= filterSeats : true
+          )
+          .filter((vehicle: Vehicle) =>
+            filterType
+              ? vehicle.bodyType.toLowerCase() === filterType.toLowerCase()
+              : true
+          );
+
+        console.log(`Filters - Seats: ${filterSeats}, Type: ${filterType}`);
+        console.log(availableVehicles); // See what's left after filtering
+        setVehicles(availableVehicles);
       } catch (error) {
         console.error('Failed to fetch vehicles', error);
       }
@@ -52,7 +77,7 @@ const CarSelectPage: React.FC = () => {
     if (selectedLocation) {
       fetchVehicles();
     }
-  }, [selectedLocation]);
+  }, [selectedLocation, filterSeats, filterType]);
 
   return (
     <MantineProvider>
@@ -69,7 +94,10 @@ const CarSelectPage: React.FC = () => {
           <Flex>
             {/* Left side container for filter */}
             <Flex flex={1} direction='column' style={{ marginLeft: '100px' }}>
-              <FiltersSection />
+              <FiltersSection
+                onTypeChange={handleTypeChange}
+                onSeatsChange={handleSeatsChange}
+              />
             </Flex>
 
             {/* Right side container for the Grid */}

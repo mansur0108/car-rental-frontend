@@ -2,8 +2,9 @@ import { Card, Image, Text, Group, Badge, Center, Button } from '@mantine/core';
 import {
   IconGasStation,
   IconGauge,
-  IconManualGearbox,
+  IconCar,
   IconUsers,
+  IconPaint,
 } from '@tabler/icons-react';
 import classes from './FeaturesCard.module.css';
 
@@ -12,7 +13,7 @@ interface Vehicle {
   make: string;
   model: string;
   year: number;
-  axles: number;
+  seats: number;
   doors: number;
   bodyType: string;
   rentCostPerDay: number;
@@ -26,8 +27,9 @@ interface FeaturesCardProps {
 
 export function FeaturesCard({ vehicle }: FeaturesCardProps) {
   const features = [
-    { label: `${vehicle.doors} doors`, icon: IconUsers },
-    { label: vehicle.bodyType, icon: IconManualGearbox },
+    { label: `${vehicle.seats} seats`, icon: IconUsers },
+    { label: vehicle.bodyType, icon: IconCar },
+    { label: vehicle.color, icon: IconPaint },
     // Add more features
   ].map((feature, index) => (
     <Center key={index}>
@@ -41,8 +43,7 @@ export function FeaturesCard({ vehicle }: FeaturesCardProps) {
       <Group justify='space-between' mt='md'>
         <div>
           <Text fw={500}>
-            {vehicle.make}
-            {vehicle.model}
+            {vehicle.make} {vehicle.model}
           </Text>
           <Text fz='xs' c='dimmed'>
             Random Text
@@ -64,7 +65,7 @@ export function FeaturesCard({ vehicle }: FeaturesCardProps) {
         <Group gap={30}>
           <div>
             <Text fz='xl' fw={700} style={{ lineHeight: 1 }}>
-              $168.00
+              ${vehicle.rentCostPerDay}
             </Text>
             <Text fz='sm' c='dimmed' fw={500} style={{ lineHeight: 1 }} mt={3}>
               per day
