@@ -1,11 +1,5 @@
-import { Card, Image, Text, Group, Badge, Center, Button } from '@mantine/core';
-import {
-  IconGasStation,
-  IconGauge,
-  IconCar,
-  IconUsers,
-  IconPaint,
-} from '@tabler/icons-react';
+import { Card, Text, Group, Center, Button } from '@mantine/core';
+import { IconCar, IconUsers, IconPaint } from '@tabler/icons-react';
 import classes from './FeaturesCard.module.css';
 
 interface Vehicle {
@@ -40,12 +34,12 @@ export function FeaturesCard({ vehicle }: FeaturesCardProps) {
 
   return (
     <Card withBorder radius='md' className={classes.card}>
-      <Group justify='space-between' mt='md'>
+      <Group justify='space-between' mt='xs'>
         <div>
-          <Text fw={500}>
+          <Text fz='lg' fw={500}>
             {vehicle.make} {vehicle.model}
           </Text>
-          <Text fz='xs' c='dimmed'>
+          <Text fz='sm' c='dimmed'>
             Random Text
           </Text>
         </div>

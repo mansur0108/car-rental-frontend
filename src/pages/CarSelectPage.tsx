@@ -11,7 +11,6 @@ import axios from 'axios';
 import { Header } from '../components/Header';
 import { FeaturesCard } from '../components/FeaturesCard';
 import FiltersSection from '../components/FiltersSection';
-import classes from './CarSelectPage.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -36,10 +35,18 @@ const CarSelectPage: React.FC = () => {
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [filterSeats, setFilterSeats] = useState<number | null>(null);
-  const [filterType, setFilterType] = useState<string | null>(null);
+  const [filterType, setFilterType] = useState<string[]>([]);
 
-  const handleTypeChange = (type: string | null) => {
-    setFilterType(type);
+  const handleTypeChange = (type: string, isChecked: boolean) => {
+    setFilterType((prevTypes) => {
+      if (isChecked) {
+        // Add type to array if it's not already included
+        return prevTypes.includes(type) ? prevTypes : [...prevTypes, type];
+      } else {
+        // Remove type from array
+        return prevTypes.filter((t) => t !== type);
+      }
+    });
   };
 
   const handleSeatsChange = (seats: number | null) => {
@@ -53,7 +60,6 @@ const CarSelectPage: React.FC = () => {
           `http://localhost:3000/api/v1/location/${selectedLocation}/vehicles`,
           { withCredentials: true }
         );
-        console.log(response.data);
 
         const availableVehicles = response.data
           .filter((vehicle: Vehicle) => !vehicle.isRented)
@@ -61,13 +67,10 @@ const CarSelectPage: React.FC = () => {
             filterSeats ? vehicle.seats >= filterSeats : true
           )
           .filter((vehicle: Vehicle) =>
-            filterType
-              ? vehicle.bodyType.toLowerCase() === filterType.toLowerCase()
+            filterType.length > 0
+              ? filterType.includes(vehicle.bodyType.toLowerCase())
               : true
           );
-
-        console.log(`Filters - Seats: ${filterSeats}, Type: ${filterType}`);
-        console.log(availableVehicles); // See what's left after filtering
         setVehicles(availableVehicles);
       } catch (error) {
         console.error('Failed to fetch vehicles', error);
