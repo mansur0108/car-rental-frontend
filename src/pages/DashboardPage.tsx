@@ -8,6 +8,7 @@ import {
   Select,
   Image,
   Box,
+  // TextInput,
 } from '@mantine/core';
 import { Header } from '../components/Header';
 import { DateInput } from '@mantine/dates';
@@ -21,15 +22,17 @@ const DashboardPage: React.FC = () => {
   >([]);
   const [pickupValue, setPickup] = useState<Date | null>(null);
   const [returnValue, setReturn] = useState<Date | null>(null);
+  // const [newLocationName, setNewLocationName] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     // Function to fetch locations from the backend
     const fetchLocations = async () => {
       try {
-        const response = await axios.get('/api/v1/location');
-        // Assuming the response contains an array of locations
-        // and each location has an 'uid' and 'address' property
+        const response = await axios.get(
+          'http://localhost:3000/api/v1/location/',
+          { withCredentials: true }
+        );
         const locationOptions = response.data.map((loc: any) => ({
           value: loc.uid.toString(),
           label: loc.address,
@@ -49,6 +52,20 @@ const DashboardPage: React.FC = () => {
   const handleLocationChange = (value: string | null) => {
     setSelectedLocation(value);
   };
+
+  // const handleAddLocation = async () => {
+  //   try {
+  //     await axios.post('/api/v1/location', {
+  //       address: newLocationName, // Assuming your API expects an object with an 'address' property
+  //     });
+  //     setNewLocationName(''); // Reset the input field after successful submission
+  //     // Optionally, fetch locations again to update the list
+  //     // fetchLocations();
+  //   } catch (error) {
+  //     console.error('Failed to add new location', error);
+  //   }
+  // };
+
   return (
     <MantineProvider>
       <Header /> {/* Display the page header */}

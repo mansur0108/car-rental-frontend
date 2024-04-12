@@ -40,7 +40,8 @@ const CarSelectPage: React.FC = () => {
     const fetchVehicles = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/location/${selectedLocation}/vehicles`
+          `http://localhost:3000/api/v1/location/${selectedLocation}/vehicles`,
+          { withCredentials: true }
         );
         setVehicles(response.data);
       } catch (error) {

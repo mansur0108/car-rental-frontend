@@ -26,7 +26,10 @@ const RegisterPage: React.FC = () => {
         {
           email,
           password,
-          uty: 0,
+          type: 0,
+        },
+        {
+          withCredentials: true,
         }
       );
       console.log('Registration successful', response.data);

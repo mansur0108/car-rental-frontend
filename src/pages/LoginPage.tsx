@@ -25,6 +25,9 @@ const LoginPage: React.FC = () => {
         {
           email,
           password,
+        },
+        {
+          withCredentials: true,
         }
       );
       console.log('Login successful', response.data);
