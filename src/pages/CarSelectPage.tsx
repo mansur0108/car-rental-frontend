@@ -48,6 +48,12 @@ const CarSelectPage: React.FC = () => {
     });
   };
 
+  const handleRentNow = (vehicle: Vehicle) => {
+    navigate('/review', {
+      state: { location: selectedLocation, vehicleId: vehicle.uid },
+    });
+  };
+
   const handleSeatsChange = (seats: number | null) => {
     setFilterSeats(seats);
   };
@@ -91,13 +97,14 @@ const CarSelectPage: React.FC = () => {
   return (
     <MantineProvider>
       <Box style={{ backgroundColor: '#fafafa', minHeight: '100vh' }}>
+        <Header />
         <Container style={{ paddingTop: '100px' }} fluid>
           {/* Back button */}
           <Button variant='outline' onClick={() => navigate('/dashboard')}>
             Back
           </Button>
         </Container>
-        <Header />
+
         {/* Main layout container */}
         <Container style={{ paddingTop: '25px' }} fluid>
           <Flex>
@@ -122,7 +129,10 @@ const CarSelectPage: React.FC = () => {
                     span={{ sm: 4, xs: 4 }}
                     key={vehicle.uid}
                   >
-                    <FeaturesCard vehicle={vehicle} />
+                    <FeaturesCard
+                      vehicle={vehicle}
+                      onRentClick={() => handleRentNow(vehicle)}
+                    />
                   </Grid.Col>
                 ))}
               </Grid>

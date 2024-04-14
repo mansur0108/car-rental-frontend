@@ -23,9 +23,10 @@ interface Feature {
 
 interface FeaturesCardProps {
   vehicle: Vehicle;
+  onRentClick: () => void;
 }
 
-export function FeaturesCard({ vehicle }: FeaturesCardProps) {
+export function FeaturesCard({ vehicle, onRentClick }: FeaturesCardProps) {
   const features: Feature[] = [
     {
       label: `${vehicle.seats} seats`,
@@ -88,7 +89,7 @@ export function FeaturesCard({ vehicle }: FeaturesCardProps) {
             </Text>
           </div>
 
-          <Button radius='xl' style={{ flex: 1 }}>
+          <Button radius='xl' style={{ flex: 1 }} onClick={onRentClick}>
             Rent now
           </Button>
         </Group>
