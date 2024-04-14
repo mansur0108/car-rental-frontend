@@ -22,7 +22,6 @@ const DashboardPage: React.FC = () => {
   >([]);
   const [pickupValue, setPickup] = useState<Date | null>(null);
   const [returnValue, setReturn] = useState<Date | null>(null);
-  // const [newLocationName, setNewLocationName] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,19 +51,6 @@ const DashboardPage: React.FC = () => {
   const handleLocationChange = (value: string | null) => {
     setSelectedLocation(value);
   };
-
-  // const handleAddLocation = async () => {
-  //   try {
-  //     await axios.post('/api/v1/location', {
-  //       address: newLocationName, // Assuming your API expects an object with an 'address' property
-  //     });
-  //     setNewLocationName(''); // Reset the input field after successful submission
-  //     // Optionally, fetch locations again to update the list
-  //     // fetchLocations();
-  //   } catch (error) {
-  //     console.error('Failed to add new location', error);
-  //   }
-  // };
 
   return (
     <MantineProvider>
@@ -98,15 +84,6 @@ const DashboardPage: React.FC = () => {
               value={selectedLocation}
               onChange={(value) => handleLocationChange(value)}
               data={locations}
-              searchable
-              nothingFoundMessage='Nothing found...'
-              size='lg'
-            />
-            {/* Car class selection dropdown */}
-            <Select
-              label='Class'
-              placeholder='Choose'
-              data={['All', 'Compact', 'Midsize', 'Standard']}
               searchable
               nothingFoundMessage='Nothing found...'
               size='lg'

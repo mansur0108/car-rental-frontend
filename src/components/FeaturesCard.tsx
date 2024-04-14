@@ -1,6 +1,7 @@
 import { Card, Text, Group, Center, Button } from '@mantine/core';
 import { IconCar, IconUsers, IconPaint } from '@tabler/icons-react';
 import classes from './FeaturesCard.module.css';
+import { Icon } from '@iconify/react';
 
 interface Vehicle {
   uid: number;
@@ -15,19 +16,43 @@ interface Vehicle {
   isRented: boolean;
 }
 
+interface Feature {
+  label: string;
+  icon: React.ReactNode;
+}
+
 interface FeaturesCardProps {
   vehicle: Vehicle;
 }
 
 export function FeaturesCard({ vehicle }: FeaturesCardProps) {
-  const features = [
-    { label: `${vehicle.seats} seats`, icon: IconUsers },
-    { label: vehicle.bodyType, icon: IconCar },
-    { label: vehicle.color, icon: IconPaint },
-    // Add more features
-  ].map((feature, index) => (
+  const features: Feature[] = [
+    {
+      label: `${vehicle.seats} seats`,
+      icon: <IconUsers size='1.05rem' className={classes.icon} stroke={1.5} />,
+    },
+    {
+      label: `${vehicle.doors} door`,
+      icon: (
+        <Icon
+          icon='mdi:car-door'
+          style={{ fontSize: '1.05rem', color: '#ccd1d6' }}
+        />
+      ),
+    },
+    {
+      label: vehicle.bodyType,
+      icon: <IconCar size='1.05rem' className={classes.icon} stroke={1.5} />,
+    },
+    {
+      label: vehicle.color,
+      icon: <IconPaint size='1.05rem' className={classes.icon} stroke={1.5} />,
+    },
+  ];
+
+  const featuresElements = features.map((feature, index) => (
     <Center key={index}>
-      <feature.icon size='1.05rem' className={classes.icon} stroke={1.5} />
+      {feature.icon}
       <Text size='xs'>{feature.label}</Text>
     </Center>
   ));
@@ -39,9 +64,6 @@ export function FeaturesCard({ vehicle }: FeaturesCardProps) {
           <Text fz='lg' fw={500}>
             {vehicle.make} {vehicle.model}
           </Text>
-          <Text fz='sm' c='dimmed'>
-            Random Text
-          </Text>
         </div>
       </Group>
 
@@ -51,7 +73,7 @@ export function FeaturesCard({ vehicle }: FeaturesCardProps) {
         </Text>
 
         <Group gap={8} mb={-8}>
-          {features}
+          {featuresElements}
         </Group>
       </Card.Section>
 

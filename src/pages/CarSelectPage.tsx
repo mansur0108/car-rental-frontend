@@ -36,14 +36,13 @@ const CarSelectPage: React.FC = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [filterSeats, setFilterSeats] = useState<number | null>(null);
   const [filterType, setFilterType] = useState<string[]>([]);
+  const [filterDoors, setFilterDoor] = useState<number | null>(null);
 
   const handleTypeChange = (type: string, isChecked: boolean) => {
     setFilterType((prevTypes) => {
       if (isChecked) {
-        // Add type to array if it's not already included
         return prevTypes.includes(type) ? prevTypes : [...prevTypes, type];
       } else {
-        // Remove type from array
         return prevTypes.filter((t) => t !== type);
       }
     });
@@ -51,6 +50,10 @@ const CarSelectPage: React.FC = () => {
 
   const handleSeatsChange = (seats: number | null) => {
     setFilterSeats(seats);
+  };
+
+  const handleDoorsChange = (doors: number | null) => {
+    setFilterDoor(doors);
   };
 
   useEffect(() => {
@@ -67,6 +70,9 @@ const CarSelectPage: React.FC = () => {
             filterSeats ? vehicle.seats >= filterSeats : true
           )
           .filter((vehicle: Vehicle) =>
+            filterDoors ? vehicle.doors >= filterDoors : true
+          )
+          .filter((vehicle: Vehicle) =>
             filterType.length > 0
               ? filterType.includes(vehicle.bodyType.toLowerCase())
               : true
@@ -80,7 +86,7 @@ const CarSelectPage: React.FC = () => {
     if (selectedLocation) {
       fetchVehicles();
     }
-  }, [selectedLocation, filterSeats, filterType]);
+  }, [selectedLocation, filterSeats, filterType, filterDoors]);
 
   return (
     <MantineProvider>
@@ -100,6 +106,7 @@ const CarSelectPage: React.FC = () => {
               <FiltersSection
                 onTypeChange={handleTypeChange}
                 onSeatsChange={handleSeatsChange}
+                onDoorsChange={handleDoorsChange}
               />
             </Flex>
 

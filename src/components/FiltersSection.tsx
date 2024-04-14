@@ -5,11 +5,13 @@ import SpacedCheckbox from './SpacedCheckbox';
 interface FiltersSectionProps {
   onSeatsChange: (seats: number | null) => void;
   onTypeChange: (type: string, isChecked: boolean) => void;
+  onDoorsChange: (doors: number | null) => void;
 }
 
 const FiltersSection: React.FC<FiltersSectionProps> = ({
   onSeatsChange,
   onTypeChange,
+  onDoorsChange,
 }) => {
   return (
     <Box
@@ -63,6 +65,21 @@ const FiltersSection: React.FC<FiltersSectionProps> = ({
         label='5+'
         value='5'
         onChange={(e) => onSeatsChange(e.target.checked ? 5 : null)}
+      />
+      <Divider my='sm' />
+
+      <Title order={5} style={{ marginBottom: '10px' }}>
+        Doors
+      </Title>
+      <SpacedCheckbox
+        label='2+'
+        value='2'
+        onChange={(e) => onDoorsChange(e.target.checked ? 2 : null)}
+      />
+      <SpacedCheckbox
+        label='4+'
+        value='4'
+        onChange={(e) => onDoorsChange(e.target.checked ? 4 : null)}
       />
     </Box>
   );
