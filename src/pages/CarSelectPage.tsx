@@ -31,7 +31,15 @@ type Vehicle = {
 const CarSelectPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { location: selectedLocation } = location.state as { location: string };
+  const {
+    location: selectedLocation,
+    pickupDate,
+    returnDate,
+  } = location.state as {
+    location: string;
+    pickupDate: Date | null;
+    returnDate: Date | null;
+  };
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [filterSeats, setFilterSeats] = useState<number | null>(null);
@@ -50,7 +58,12 @@ const CarSelectPage: React.FC = () => {
 
   const handleRentNow = (vehicle: Vehicle) => {
     navigate('/review', {
-      state: { location: selectedLocation, vehicleId: vehicle.uid },
+      state: {
+        location: selectedLocation,
+        vehicleId: vehicle.uid,
+        pickupDate,
+        returnDate,
+      },
     });
   };
 
@@ -98,7 +111,7 @@ const CarSelectPage: React.FC = () => {
     <MantineProvider>
       <Box style={{ backgroundColor: '#fafafa', minHeight: '100vh' }}>
         <Header />
-        <Container style={{ paddingTop: '100px' }} fluid>
+        <Container style={{ paddingTop: '100px', paddingBottom: '25px' }} fluid>
           {/* Back button */}
           <Button variant='outline' onClick={() => navigate('/dashboard')}>
             Back
@@ -106,10 +119,10 @@ const CarSelectPage: React.FC = () => {
         </Container>
 
         {/* Main layout container */}
-        <Container style={{ paddingTop: '25px' }} fluid>
+        <Container fluid>
           <Flex>
             {/* Left side container for filter */}
-            <Flex flex={1} direction='column' style={{ marginLeft: '100px' }}>
+            <Flex flex={1} direction='column'>
               <FiltersSection
                 onTypeChange={handleTypeChange}
                 onSeatsChange={handleSeatsChange}
@@ -118,7 +131,7 @@ const CarSelectPage: React.FC = () => {
             </Flex>
 
             {/* Right side container for the Grid */}
-            <Flex flex={5} direction='column' style={{ marginLeft: '35px' }}>
+            <Flex flex={5} direction='column' style={{ marginLeft: '15px' }}>
               <Grid
                 gutter={{ base: 10, xs: 'lg', md: 'xl', xl: 80 }}
                 justify='flex-start'

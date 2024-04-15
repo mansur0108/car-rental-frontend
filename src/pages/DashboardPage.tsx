@@ -46,7 +46,13 @@ const DashboardPage: React.FC = () => {
   }, []);
 
   const handleSearch = () => {
-    navigate('/selection', { state: { location: selectedLocation } });
+    navigate('/selection', {
+      state: {
+        location: selectedLocation,
+        pickupDate: pickupValue,
+        returnDate: returnValue,
+      },
+    });
   };
   const handleLocationChange = (value: string | null) => {
     setSelectedLocation(value);
@@ -104,7 +110,6 @@ const DashboardPage: React.FC = () => {
               placeholder='Date input'
               size='lg'
             />
-            {/* Search button to trigger the search functionality not implemented yet*/}
             <Button className={classes.button} size='lg' onClick={handleSearch}>
               Search
             </Button>
