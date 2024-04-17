@@ -67,6 +67,25 @@ const ReviewPage: React.FC = () => {
 
   const totalCost = rentalDays * vehicle.rentCostPerDay;
 
+  const handleReserveNow = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:3000/api/v1/vehicle/${vehicleId}/rent`,
+        { lengthInDays: rentalDays },
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        alert('Vehicle reserved successfully!');
+        navigate('/dashboard');
+      } else {
+        alert('Failed to reserve vehicle: ' + response.data.message);
+      }
+    } catch (error) {
+      console.error('Error reserving vehicle:', error);
+      alert('Error reserving vehicle. Please try again later.');
+    }
+  };
+
   return (
     <MantineProvider>
       <Box style={{ backgroundColor: '#fafafa', minHeight: '100vh' }}>
@@ -181,7 +200,12 @@ const ReviewPage: React.FC = () => {
               </Flex>
               <Divider my='xs' />
               <Space h='md' />
-              <Button variant='outline' size='xl' radius='xl'>
+              <Button
+                variant='outline'
+                size='xl'
+                radius='xl'
+                onClick={handleReserveNow}
+              >
                 Reserve Now
               </Button>
             </Flex>
