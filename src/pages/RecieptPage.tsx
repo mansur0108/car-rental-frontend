@@ -28,10 +28,10 @@ export default function RecieptPage() {
     setContact('');
     setFuel('unleaded');
     setSelectedOptionCar('');
-	setSelectedOptionFuel('');
+    setSelectedOptionFuel('');
     setFee(0);
     setAddress('');
-	setCondition('');
+    setCondition('');
   };
 
   //Render Vendor Page
@@ -85,35 +85,23 @@ export default function RecieptPage() {
             <select
               name='select'
               id='select'
-              defaultValue="sedan"
+              defaultValue='sedan'
               onChange={(e) => setSelectedOptionCar(e.target.value)}
             >
-              <option
-                value='sedan'
-              >Sedan</option>
-			  <option
-                value='suv'
-              >SUV</option>
-			  <option
-                value='truck'
-              >Truck</option>
+              <option value='sedan'>Sedan</option>
+              <option value='suv'>SUV</option>
+              <option value='truck'>Truck</option>
             </select>
             <label htmlFor='fuel'>Fuel Type*</label>
             <select
               name='select'
               id='select'
-              defaultValue="gas"
+              defaultValue='gas'
               onChange={(e) => setSelectedOptionFuel(e.target.value)}
             >
-              <option
-                value='gas'
-              >Gas</option>
-			  <option
-                value='hybrid'
-              >Hybrid</option>
-			  <option
-                value='electric'
-              >Electric</option>
+              <option value='gas'>Gas</option>
+              <option value='hybrid'>Hybrid</option>
+              <option value='electric'>Electric</option>
             </select>
             <label htmlFor='fees'>Maintence Fees</label>
             <input

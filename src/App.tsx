@@ -8,6 +8,8 @@ import CarSelectPage from './pages/CarSelectPage';
 import RecieptPage from './pages/RecieptPage';
 import VendorDashPage from './pages/VendorDashPage';
 import ReviewPage from './pages/ReviewPage';
+import VendorCarSelectionPage from './pages/VendorCarSelectionPage';
+import VendorCarDetailsPage from './pages/VendorCarDetailsPage';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 
@@ -23,8 +25,10 @@ function App() {
           <Route path='/dashboard' element={<DashboardPage />} />
           <Route path='/selection' element={<CarSelectPage />} />
           <Route path='/reciept' element={<RecieptPage />} />
-          <Route path='/Vendash' element={<VendorDashPage />} />
+          <Route path='/vendash' element={<VendorDashPage />} />
           <Route path='/review' element={<ReviewPage />} />
+          <Route path='/vendorcars' element={<VendorCarSelectionPage />} />
+          <Route path='/vendorcardetail' element={<VendorCarDetailsPage />} />
         </Routes>
       </Router>
     </MantineProvider>
