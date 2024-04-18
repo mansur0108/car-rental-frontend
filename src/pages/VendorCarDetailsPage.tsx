@@ -11,6 +11,7 @@ import {
   SimpleGrid,
   Space,
   Select,
+  TextInput,
 } from '@mantine/core';
 import { Notifications, notifications } from '@mantine/notifications';
 import axios from 'axios';
@@ -216,6 +217,22 @@ const VendorCarDetailsPage: React.FC = () => {
                 />
                 <Button size='md' onClick={handleRelocation}>
                   Change
+                </Button>
+              </Flex>
+
+              <Space h='xs' />
+
+              <Text td='underline' size='xl'>
+                Create Reservation
+              </Text>
+              <Flex direction='column' align='flex-start'>
+                <TextInput label='First Name' withAsterisk />
+                <TextInput label='Last Name' withAsterisk />
+                <Button
+                  style={{ marginTop: '10px' }}
+                  disabled={vehicle.isRented}
+                >
+                  Reserve
                 </Button>
               </Flex>
             </Flex>
