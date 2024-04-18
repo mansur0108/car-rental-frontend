@@ -128,6 +128,8 @@ const VendorCarDetailsPage: React.FC = () => {
     return <Text>Loading vehicle data...</Text>;
   }
 
+  const availabilityText = vehicle.isRented ? "Rented" : "Available";
+
   return (
     <MantineProvider>
       <Notifications />
@@ -166,11 +168,16 @@ const VendorCarDetailsPage: React.FC = () => {
               >
                 <Title order={2}>Rental Details</Title>
                 <Divider my='xs' />
+                
                 <Text td='underline' size='xl'>
-                  Pickup & Return Location
+                  Pickup Location
                 </Text>
-                <Text size='md'>{locationName}</Text>
+                <Text>{locationName}</Text>
+                
+                <Divider my='xs' />
+                <Text size="lg">Vehicle availability: {availabilityText}</Text>
               </Flex>
+
               {/* Vehicle Summary */}
               <Flex
                 direction='column'
