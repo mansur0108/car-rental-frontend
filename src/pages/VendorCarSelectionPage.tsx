@@ -9,10 +9,9 @@ import {
 } from '@mantine/core';
 import axios from 'axios';
 import { Header } from '../components/Header';
-import { FeaturesCard } from '../components/FeaturesCard';
+import { VendorFeatureCard } from '../components/VendorFeatureCard';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { VendorFeatureCard } from '../components/VendorFeatureCard';
 
 type Vehicle = {
   uid: number;
@@ -49,14 +48,10 @@ const VendorCarSelectionPage: React.FC = () => {
     const fetchVehicles = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/location/${selectedLocation}/vehicles`,
+          `http://localhost:3000/api/v1/location/${selectedLocation}/vehicles?includeRented=true`,
           { withCredentials: true }
         );
-
-        const availableVehicles = response.data.filter(
-          (vehicle: Vehicle) => !vehicle.isRented
-        );
-        setVehicles(availableVehicles);
+        setVehicles(response.data);
       } catch (error) {
         console.error('Failed to fetch vehicles', error);
       }

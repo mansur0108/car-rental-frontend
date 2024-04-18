@@ -68,6 +68,9 @@ export function VendorFeatureCard({
           <Text fz='lg' fw={500}>
             {vehicle.make} {vehicle.model}
           </Text>
+          <Text fz='sm' c='dimmed'>
+            {vehicle.isRented ? 'Reserved' : 'Available'}
+          </Text>
         </div>
       </Group>
 

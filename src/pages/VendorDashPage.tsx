@@ -11,7 +11,6 @@ import {
   // TextInput,
 } from '@mantine/core';
 import { VendorHeader } from '../components/VendorHeader';
-import { DateInput } from '@mantine/dates';
 import classes from './VendorDashPage.module.css';
 import { useNavigate } from 'react-router-dom';
 

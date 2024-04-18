@@ -79,12 +79,11 @@ const CarSelectPage: React.FC = () => {
     const fetchVehicles = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/location/${selectedLocation}/vehicles`,
+          `http://localhost:3000/api/v1/location/${selectedLocation}/vehicles?includeRented=false}`,
           { withCredentials: true }
         );
 
         const availableVehicles = response.data
-          .filter((vehicle: Vehicle) => !vehicle.isRented)
           .filter((vehicle: Vehicle) =>
             filterSeats ? vehicle.seats >= filterSeats : true
           )
