@@ -12,6 +12,7 @@ import VendorCarSelectionPage from './pages/VendorCarSelectionPage';
 import VendorCarDetailsPage from './pages/VendorCarDetailsPage';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
+import '@mantine/notifications/styles.css';
 
 const theme = createTheme({});
 
