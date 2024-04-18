@@ -12,6 +12,8 @@ import {
   Space,
   Select,
   TextInput,
+  LoadingOverlay,
+  Textarea,
 } from '@mantine/core';
 import { Notifications, notifications } from '@mantine/notifications';
 import axios from 'axios';
@@ -26,14 +28,11 @@ const VendorCarDetailsPage: React.FC = () => {
   >([]);
   const [vehicle, setVehicle] = useState<any>(null);
   const [locationName, setLocationName] = useState<string>('');
-  const [changedLocation, setSelectedLocation] = useState<string | null>(null);
+  const [returnedLocation, setReturnedLocation] = useState<string | null>(null);
+  const [returningVehicle, setReturningVehicle] = useState<boolean>(false);
   const { location: selectedLocation, vehicleId } = location.state as {
     location: string;
     vehicleId: number;
-  };
-
-  const handleLocationChange = (value: string | null) => {
-    setSelectedLocation(value);
   };
 
   useEffect(() => {
@@ -81,42 +80,48 @@ const VendorCarDetailsPage: React.FC = () => {
     if (vehicleId && selectedLocation) fetchVehicleData();
   }, [vehicleId, selectedLocation]);
 
-  const handleRelocation = async () => {
-    if (!changedLocation) {
-      notifications.show({
-        title: 'Error',
-        message: 'Please select a location to change.',
-        color: 'red',
-      });
-      return;
+  const handleVehicleReturnClick = async () =>{
+    const location = returnedLocation;//returnedLocationSelectorRef.current?.valueAsNumber;
+
+    // make sure a location was selected
+    if (location === undefined) {
+      alert("You must specify a return location for the vehicle");
+      return; // todo: display some error
     }
+    // show loading screen
+    setReturningVehicle(true);
+
+    await axios({
+      method: "post",
+      url: `http://localhost:3000/api/v1/vehicle/${vehicle.uid}/relocate`,
+      withCredentials: true,
+      data: {
+        "location": location
+      }
+    });
 
     try {
-      const response = await axios.post(
-        `http://localhost:3000/api/v1/vehicle/${vehicleId}/relocate`,
-        { location: changedLocation },
-        { withCredentials: true }
-      );
-      if (response.status === 200) {
-        notifications.show({
-          title: 'Success',
-          message: 'Vehicle location updated successfully!',
-          color: 'green',
-        });
-        const locationResponse = await axios.get(
-          `http://localhost:3000/api/v1/location/${changedLocation}`,
-          { withCredentials: true }
-        );
-        setLocationName(locationResponse.data.address);
-      }
-    } catch (error) {
-      console.error('Failed to relocate vehicle', error);
-      notifications.show({
-        title: 'Error',
-        message: 'Already in this location.',
-        color: 'red',
+      await axios({
+        method: "delete",
+        url: `http://localhost:3000/api/v1/vehicle/${vehicle.uid}/rent`,
+        withCredentials: true,
       });
+    } catch (error) {
+      console.error('Failed to fetch locations', JSON.stringify(error));
     }
+
+    // hide loading screen
+    setReturningVehicle(false);
+
+    navigate('/vendorcardetail', {
+      state: {
+        location: location!, // force non-null
+        vehicleId: vehicle.uid,
+      },
+    });
+
+    // scroll to top
+    window.scrollTo(0, 0);
   };
 
   if (!vehicle || !selectedLocation) {
@@ -143,6 +148,8 @@ const VendorCarDetailsPage: React.FC = () => {
         </Container>
 
         <Container>
+          <LoadingOverlay visible={returningVehicle} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+
           <SimpleGrid cols={{ base: 1, lg: 2 }}>
             <Flex justify='center' direction='column' gap='md'>
               {/* Rental Details */}
@@ -187,6 +194,36 @@ const VendorCarDetailsPage: React.FC = () => {
                 <Text>Color: {vehicle.color}</Text>
               </Flex>
             </Flex>
+
+            <Flex
+              direction='column'
+              style={{
+                borderWidth: 1,
+                borderColor: '#E9ECEF',
+                borderStyle: 'solid',
+                borderRadius: 8,
+                background: '#fff',
+                width: '100%',
+                padding: '15px',
+              }}
+            >
+              <Title order={2}>Return Vehicle</Title>
+              <Divider my='xs' />
+              <Select
+                label="Return Location"
+                placeholder='Location'
+                value={returnedLocation}
+                onChange={(value) => setReturnedLocation(value)}
+                data={locations}
+                searchable
+                nothingFoundMessage='Nothing found...'
+              />
+              <TextInput label="Maintenance Costs" placeholder="$0.00" />
+              <Textarea label="Condition" />
+              <Space my="xs" />
+              <Button onClick={handleVehicleReturnClick}>Return Vehicle</Button>
+            </Flex>
+            
             <Flex
               direction='column'
               style={{
@@ -201,26 +238,6 @@ const VendorCarDetailsPage: React.FC = () => {
             >
               <Title order={2}>Options</Title>
               <Divider my='xs' />
-              <Text td='underline' size='xl'>
-                Change Location
-              </Text>
-              <Space h='xs' />
-              <Flex align='center' gap='md'>
-                <Select
-                  placeholder='Choose'
-                  value={changedLocation}
-                  onChange={(value) => handleLocationChange(value)}
-                  data={locations}
-                  searchable
-                  nothingFoundMessage='Nothing found...'
-                  size='md'
-                />
-                <Button size='md' onClick={handleRelocation}>
-                  Change
-                </Button>
-              </Flex>
-
-              <Space h='xs' />
 
               <Text td='underline' size='xl'>
                 Create Reservation
