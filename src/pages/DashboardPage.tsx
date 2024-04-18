@@ -10,6 +10,7 @@ import {
   Box,
   // TextInput,
 } from '@mantine/core';
+import dayjs from 'dayjs';
 import { Header } from '../components/Header';
 import { DateInput } from '@mantine/dates';
 import classes from './Dashboard.module.css';
@@ -57,6 +58,10 @@ const DashboardPage: React.FC = () => {
   const handleLocationChange = (value: string | null) => {
     setSelectedLocation(value);
   };
+  const handlePickupChange = (date: Date | null) => {
+    setPickup(date);
+    setReturn(null); // Reset the return date whenever the pickup date changes
+  };
 
   return (
     <MantineProvider>
@@ -96,14 +101,16 @@ const DashboardPage: React.FC = () => {
             />
             {/* Pickup date input */}
             <DateInput
+              minDate={new Date()}
               value={pickupValue}
-              onChange={setPickup}
+              onChange={handlePickupChange}
               label='Pick-up'
               placeholder='Date input'
               size='lg'
             />
             {/* Return date input */}
             <DateInput
+              minDate={dayjs(pickupValue).add(1, 'day').toDate()}
               value={returnValue}
               onChange={setReturn}
               label='Return'
