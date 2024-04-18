@@ -80,25 +80,55 @@ const VendorCarDetailsPage: React.FC = () => {
     if (vehicleId && selectedLocation) fetchVehicleData();
   }, [vehicleId, selectedLocation]);
 
-  const handleVehicleReturnClick = async () =>{
-    const location = returnedLocation;//returnedLocationSelectorRef.current?.valueAsNumber;
-
-    // make sure a location was selected
-    if (location === undefined) {
-      alert("You must specify a return location for the vehicle");
-      return; // todo: display some error
-    }
-    // show loading screen
-    setReturningVehicle(true);
-
+  const relocateVehicle = async (newLocation: string | null) =>{
     await axios({
       method: "post",
       url: `http://localhost:3000/api/v1/vehicle/${vehicle.uid}/relocate`,
       withCredentials: true,
       data: {
-        "location": location
+        "location": newLocation
       }
     });
+  };
+
+  const handleRelocateVehicle = async (newLocation: string | null) =>{
+    console.log(`Relocate to location: ${JSON.stringify(newLocation)}`);
+
+    // make sure a location was selected
+    if (newLocation === undefined) {
+      alert("You must specify a return location for the vehicle");
+      return;
+    }
+    // show loading screen
+    setReturningVehicle(true);
+
+    await relocateVehicle(newLocation);
+    
+    // hide loading screen
+    setReturningVehicle(false);
+
+    //const location = location
+    navigate('/vendorcardetail', {
+      state: {
+        location: newLocation!, // force non-null
+        vehicleId: vehicle.uid,
+      },
+    });
+
+    // scroll to top
+    window.scrollTo(0, 0);
+  };
+
+  const handleVehicleReturnClick = async (newLocation: string | null) =>{
+    // make sure a location was selected
+    if (location === undefined) {
+      alert("You must specify a return location for the vehicle");
+      return;
+    }
+    // show loading screen
+    setReturningVehicle(true);
+
+    await relocateVehicle(newLocation);
 
     try {
       await axios({
@@ -212,6 +242,7 @@ const VendorCarDetailsPage: React.FC = () => {
                 background: '#fff',
                 width: '100%',
                 padding: '15px',
+                visibility: vehicle.isRented ? "visible" : "collapse"
               }}
             >
               <Title order={2}>Return Vehicle</Title>
@@ -228,7 +259,7 @@ const VendorCarDetailsPage: React.FC = () => {
               <TextInput label="Maintenance Costs" placeholder="$0.00" />
               <Textarea label="Condition" />
               <Space my="xs" />
-              <Button onClick={handleVehicleReturnClick}>Return Vehicle</Button>
+              <Button onClick={() => handleVehicleReturnClick(returnedLocation)}>Return Vehicle</Button>
             </Flex>
             
             <Flex
@@ -246,10 +277,35 @@ const VendorCarDetailsPage: React.FC = () => {
               <Title order={2}>Options</Title>
               <Divider my='xs' />
 
-              <Text td='underline' size='xl'>
-                Create Reservation
-              </Text>
               <Flex direction='column' align='flex-start'>
+                <Text td='underline' size='xl'>
+                  Relocate Vehicle
+                </Text>
+
+                <Select
+                  label="Location"
+                  placeholder='New location'
+                  value={returnedLocation}
+                  onChange={(value) => handleRelocateVehicle(value)}
+                  data={locations}
+                  searchable
+                  nothingFoundMessage='Nothing found...'
+                />
+                <Space my="sm" />
+              </Flex>
+
+              <Flex
+                direction='column'
+                align='flex-start'
+                style={{
+                  // only show when the vehicle is not rented
+                  visibility: vehicle.isRented ? "collapse" : "visible"
+                }}
+              >
+                <Text td='underline' size='xl'>
+                  Create Reservation
+                </Text>
+
                 <TextInput label='First Name' withAsterisk />
                 <TextInput label='Last Name' withAsterisk />
                 <Button
@@ -259,6 +315,7 @@ const VendorCarDetailsPage: React.FC = () => {
                   Reserve
                 </Button>
               </Flex>
+              
             </Flex>
           </SimpleGrid>
         </Container>
