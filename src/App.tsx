@@ -24,11 +24,11 @@ function App() {
           <Route path='/' element={<LoginPage />} />
           <Route path='/dashboard' element={<DashboardPage />} />
           <Route path='/selection' element={<CarSelectPage />} />
-          <Route path='/reciept' element={<RecieptPage />} />
-          <Route path='/vendash' element={<VendorDashPage />} />
           <Route path='/review' element={<ReviewPage />} />
+          <Route path='/vendash' element={<VendorDashPage />} />
           <Route path='/vendorcars' element={<VendorCarSelectionPage />} />
           <Route path='/vendorcardetail' element={<VendorCarDetailsPage />} />
+          <Route path='/reciept' element={<RecieptPage />} />
         </Routes>
       </Router>
     </MantineProvider>
