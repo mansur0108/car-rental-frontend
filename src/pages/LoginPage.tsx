@@ -31,7 +31,13 @@ const LoginPage: React.FC = () => {
         }
       );
       console.log('Login successful', response.data);
-      navigate('/dashboard'); // Navigate to dashboard on successful login
+
+      // if the user is a vendor, go to the vendor dashboard, else the normal user one
+      if (response.data.uty === 1) {
+        navigate('/vendash');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error) {
       // Handle login error
       let errorMessage = 'An unexpected error occurred';

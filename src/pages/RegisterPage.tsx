@@ -3,9 +3,11 @@ import axios from 'axios';
 import './RegisterPage.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { Checkbox, Text } from '@mantine/core';
 
 const RegisterPage: React.FC = () => {
   // State hooks for managing form inputs and register message
+  const [createVendor, setCreateVendor] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -20,20 +22,24 @@ const RegisterPage: React.FC = () => {
 
   const handleRegister = async () => {
     try {
+      const type = createVendor ? 1 : 0; // 1 == Vendor user type
+      
       // Attempt to register using the API
       const response = await axios.post(
         'http://localhost:3000/api/v1/user/register',
         {
           email,
           password,
-          type: 0,
+          type,
         },
         {
           withCredentials: true,
         }
       );
+      
       console.log('Registration successful', response.data);
       navigate('/'); // Navigate to login page upon successful registration
+
     } catch (error) {
       let errorMessage = 'An unexpected error occurred';
       if (axios.isAxiosError(error) && error.response) {
@@ -72,6 +78,13 @@ const RegisterPage: React.FC = () => {
             {showPassword ? 'Hide' : 'Show'}
           </button>
         </div>
+        
+        <Checkbox label="Vendor Account"
+          onChange={(ev) => setCreateVendor(ev.currentTarget.checked)}
+          description="(Demo only) Vendor accounts have access
+            to create vehicles, locations, and more"
+        />
+
         <button onClick={handleRegister} className='register-button'>
           Register
         </button>
