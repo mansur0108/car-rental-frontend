@@ -2,23 +2,24 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   MantineProvider,
-  Container,
   Button,
   Flex,
   Select,
   Image,
   Box,
-  // TextInput,
+  TextInput,
+  Space,
 } from '@mantine/core';
 import { VendorHeader } from '../components/VendorHeader';
-import classes from './VendorDashPage.module.css';
 import { useNavigate } from 'react-router-dom';
+import { Notifications, notifications } from '@mantine/notifications';
 
 const VendorDashPage: React.FC = () => {
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [locations, setLocations] = useState<
     Array<{ value: string; label: string }>
   >([]);
+  const [newLocation, setNewLocation] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,6 +43,29 @@ const VendorDashPage: React.FC = () => {
     fetchLocations();
   }, []);
 
+  const handleAddLocation = async () => {
+    try {
+      const response = await axios.post(
+        'http://localhost:3000/api/v1/location/',
+        { address: newLocation },
+        { withCredentials: true }
+      );
+      notifications.show({
+        title: 'Success!',
+        message: 'Added new location.',
+        color: 'green',
+      });
+      setLocations([
+        ...locations,
+        { value: response.data.uid.toString(), label: response.data.address },
+      ]);
+      setNewLocation('');
+    } catch (error) {
+      console.error('Failed to add location:', error);
+      alert('Failed to add location. Please try again later.');
+    }
+  };
+
   const handleSearch = () => {
     navigate('/vendorcars', { state: { location: selectedLocation } }); //Fix Selection Page For Vendor
   };
@@ -51,29 +75,48 @@ const VendorDashPage: React.FC = () => {
 
   return (
     <MantineProvider>
+      <Notifications />
       <VendorHeader /> {/* Display the page header */}
       {/* Overlay image as the dashboard background */}
-      <Box className={classes.imageOverlay}>
+      <Box style={{ position: 'relative' }}>
         <Image
           src='https://cdn.www.nation.com/nation/wp-content/uploads/2018/03/Inside-2017s-Most-Exciting-High-Tech-Cars.jpg'
           radius='sm'
           h={600}
         ></Image>
       </Box>
-      {/* Container for the search functionality */}
-      <Container style={{ paddingTop: '60px' }} fluid>
-        {/* Inner container with custom styles for search inputs and button */}
-        <Container className={classes.search} fluid>
-          <Flex
-            className={classes.customFlex}
-            direction={{ base: 'column', sm: 'row' }} // column in mobile view, row in wider screens
-            justify='center' // center the flex items horizontally
-            gap={{ base: 'sm', sm: 'lg' }} // Spacing
-            align={{
-              base: 'stretch',
-              sm: 'flex-end',
-            }}
-          >
+      <Flex style={{ marginTop: '-100px' }} justify='center'>
+        <Box
+          p='md'
+          w={420}
+          style={{
+            borderWidth: 1,
+            borderColor: '#E9ECEF',
+            borderStyle: 'solid',
+            borderRadius: 8,
+            background: '#fff',
+            zIndex: '1',
+          }}
+        >
+          <Flex gap='sm'>
+            <TextInput
+              w='70%'
+              size='lg'
+              label='Add New Location'
+              value={newLocation}
+              onChange={(e) => setNewLocation(e.currentTarget.value)}
+            />
+            <Button
+              w='28%'
+              style={{ marginTop: '28px' }}
+              size='lg'
+              onClick={handleAddLocation}
+            >
+              Add
+            </Button>
+          </Flex>
+          <Space h='sm' />
+          <Flex gap='sm'>
             {/* Location selection dropdown */}
             <Select
               label='Location'
@@ -86,12 +129,16 @@ const VendorDashPage: React.FC = () => {
               size='lg'
             />
             {/* Search button to trigger the search functionality not implemented yet*/}
-            <Button className={classes.button} size='lg' onClick={handleSearch}>
+            <Button
+              style={{ marginTop: '28px' }}
+              size='lg'
+              onClick={handleSearch}
+            >
               Search
             </Button>
           </Flex>
-        </Container>
-      </Container>
+        </Box>
+      </Flex>
     </MantineProvider>
   );
 };
