@@ -15,8 +15,8 @@ import {
   LoadingOverlay,
   Textarea,
 } from '@mantine/core';
-import { Notifications, notifications } from '@mantine/notifications';
-import axios, { Axios, AxiosError } from 'axios';
+import { Notifications } from '@mantine/notifications';
+import axios from 'axios';
 import { Header } from '../components/Header';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -30,7 +30,7 @@ const VendorCarDetailsPage: React.FC = () => {
   const [locationName, setLocationName] = useState<string>('');
   const [returnedLocation, setReturnedLocation] = useState<string | null>(null);
   const [showLoadingScreen, setShowLoadingScreen] = useState<boolean>(false);
-  
+
   const rentalEmailRef = useRef<HTMLInputElement>(null);
   const rentalLengthRef = useRef<HTMLInputElement>(null);
 
@@ -84,32 +84,42 @@ const VendorCarDetailsPage: React.FC = () => {
     if (vehicleId && selectedLocation) fetchVehicleData();
   }, [vehicleId, selectedLocation]);
 
-  const relocateVehicle = async (newLocation: string | null, allowNotModified: boolean) =>{
+  const relocateVehicle = async (
+    newLocation: string | null,
+    allowNotModified: boolean
+  ) => {
     await axios({
-      method: "post",
+      method: 'post',
       url: `http://localhost:3000/api/v1/vehicle/${vehicle.uid}/relocate`,
       withCredentials: true,
       data: {
-        "location": newLocation
+        location: newLocation,
       },
       validateStatus(status) {
         // allow 304 (NOT_MODIFIED) if the argument allows it
-        return (status >= 200 && status < 300) || (status === 304 && allowNotModified);
+        return (
+          (status >= 200 && status < 300) ||
+          (status === 304 && allowNotModified)
+        );
       },
     });
   };
 
-  const handleCreateReservation = async () =>{
+  const handleCreateReservation = async () => {
     let lengthStr = rentalLengthRef.current?.value;
     let length = parseInt(lengthStr!);
-    if (lengthStr === undefined || lengthStr.length === 0 || Number.isNaN(length)) {
-      alert("Rental length must be a number!");
+    if (
+      lengthStr === undefined ||
+      lengthStr.length === 0 ||
+      Number.isNaN(length)
+    ) {
+      alert('Rental length must be a number!');
       return;
     }
 
     let email = rentalEmailRef.current?.value;
     if (email === undefined || email.length === 0) {
-      alert("Email of customer is required");
+      alert('Email of customer is required');
       return;
     }
 
@@ -117,15 +127,15 @@ const VendorCarDetailsPage: React.FC = () => {
     setShowLoadingScreen(true);
 
     await axios({
-      method: "post",
+      method: 'post',
       url: `http://localhost:3000/api/v1/vehicle/${vehicle.uid}/rent`,
       withCredentials: true,
       data: {
-        "forUserEmail": email,
-        "lengthInDays": length,
-      }
+        forUserEmail: email,
+        lengthInDays: length,
+      },
     });
-    
+
     // hide loading screen
     setShowLoadingScreen(false);
 
@@ -140,17 +150,17 @@ const VendorCarDetailsPage: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
-  const handleRelocateVehicle = async (newLocation: string | null) =>{
+  const handleRelocateVehicle = async (newLocation: string | null) => {
     // make sure a location was selected
     if (newLocation === undefined) {
-      alert("You must specify a return location for the vehicle");
+      alert('You must specify a return location for the vehicle');
       return;
     }
     // show loading screen
     setShowLoadingScreen(true);
 
     await relocateVehicle(newLocation, true);
-    
+
     // hide loading screen
     setShowLoadingScreen(false);
 
@@ -166,10 +176,10 @@ const VendorCarDetailsPage: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
-  const handleVehicleReturnClick = async (newLocation: string | null) =>{
+  const handleVehicleReturnClick = async (newLocation: string | null) => {
     // make sure a location was selected
     if (location === undefined) {
-      alert("You must specify a return location for the vehicle");
+      alert('You must specify a return location for the vehicle');
       return;
     }
     // show loading screen
@@ -179,7 +189,7 @@ const VendorCarDetailsPage: React.FC = () => {
 
     try {
       await axios({
-        method: "delete",
+        method: 'delete',
         url: `http://localhost:3000/api/v1/vehicle/${vehicle.uid}/rent`,
         withCredentials: true,
       });
@@ -205,7 +215,7 @@ const VendorCarDetailsPage: React.FC = () => {
     return <Text>Loading vehicle data...</Text>;
   }
 
-  const availabilityText = vehicle.isRented ? "Rented" : "Available";
+  const availabilityText = vehicle.isRented ? 'Rented' : 'Available';
 
   return (
     <MantineProvider>
@@ -227,7 +237,11 @@ const VendorCarDetailsPage: React.FC = () => {
         </Container>
 
         <Container>
-          <LoadingOverlay visible={showLoadingScreen} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+          <LoadingOverlay
+            visible={showLoadingScreen}
+            zIndex={1000}
+            overlayProps={{ radius: 'sm', blur: 2 }}
+          />
 
           <SimpleGrid cols={{ base: 1, lg: 2 }}>
             <Flex justify='center' direction='column' gap='md'>
@@ -245,14 +259,14 @@ const VendorCarDetailsPage: React.FC = () => {
               >
                 <Title order={2}>Rental Details</Title>
                 <Divider my='xs' />
-                
+
                 <Text td='underline' size='xl'>
                   Pickup Location
                 </Text>
                 <Text>{locationName}</Text>
-                
+
                 <Divider my='xs' />
-                <Text size="lg">Vehicle availability: {availabilityText}</Text>
+                <Text size='lg'>Vehicle availability: {availabilityText}</Text>
               </Flex>
 
               {/* Vehicle Summary */}
@@ -289,14 +303,14 @@ const VendorCarDetailsPage: React.FC = () => {
                 background: '#fff',
                 width: '100%',
                 padding: '15px',
-                visibility: vehicle.isRented ? "visible" : "collapse"
+                visibility: vehicle.isRented ? 'visible' : 'collapse',
               }}
             >
               <Title order={2}>Return Vehicle</Title>
               <Divider my='xs' />
 
               <Select
-                label="Return Location"
+                label='Return Location'
                 placeholder='Location'
                 value={returnedLocation}
                 onChange={(value) => setReturnedLocation(value)}
@@ -305,14 +319,18 @@ const VendorCarDetailsPage: React.FC = () => {
                 nothingFoundMessage='Nothing found...'
                 withAsterisk
               />
-              
-              <TextInput label="Maintenance Costs" placeholder="$0.00" />
-              <Textarea label="Condition" />
-              <Space my="xs" />
-              
-              <Button onClick={() => handleVehicleReturnClick(returnedLocation)}>Return Vehicle</Button>
+
+              <TextInput label='Maintenance Costs' placeholder='$0.00' />
+              <Textarea label='Condition' />
+              <Space my='xs' />
+
+              <Button
+                onClick={() => handleVehicleReturnClick(returnedLocation)}
+              >
+                Return Vehicle
+              </Button>
             </Flex>
-            
+
             <Flex
               direction='column'
               style={{
@@ -334,7 +352,7 @@ const VendorCarDetailsPage: React.FC = () => {
                 </Text>
 
                 <Select
-                  label="Location"
+                  label='Location'
                   placeholder='New location'
                   value={returnedLocation}
                   onChange={(value) => handleRelocateVehicle(value)}
@@ -342,7 +360,7 @@ const VendorCarDetailsPage: React.FC = () => {
                   searchable
                   nothingFoundMessage='Nothing found...'
                 />
-                <Space my="sm" />
+                <Space my='sm' />
               </Flex>
 
               <Flex
@@ -350,22 +368,26 @@ const VendorCarDetailsPage: React.FC = () => {
                 align='flex-start'
                 style={{
                   // only show when the vehicle is not rented
-                  visibility: vehicle.isRented ? "collapse" : "visible"
+                  visibility: vehicle.isRented ? 'collapse' : 'visible',
                 }}
               >
                 <Text td='underline' size='xl'>
                   Create Reservation
                 </Text>
 
-                <TextInput label='Customer email' withAsterisk ref={rentalEmailRef} />
-                <TextInput label='Length in days' placeholder="5" withAsterisk ref={rentalLengthRef} />
-                <Button
-                  onClick={handleCreateReservation}
-                >
-                  Reserve
-                </Button>
+                <TextInput
+                  label='Customer email'
+                  withAsterisk
+                  ref={rentalEmailRef}
+                />
+                <TextInput
+                  label='Length in days'
+                  placeholder='5'
+                  withAsterisk
+                  ref={rentalLengthRef}
+                />
+                <Button onClick={handleCreateReservation}>Reserve</Button>
               </Flex>
-              
             </Flex>
           </SimpleGrid>
         </Container>
