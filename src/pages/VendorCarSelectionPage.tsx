@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   MantineProvider,
@@ -8,10 +8,10 @@ import {
   Button,
 } from '@mantine/core';
 import axios from 'axios';
+import AddVehicleSection from '../components/AddVehicleSection';
 import { Header } from '../components/Header';
 import { VendorFeatureCard } from '../components/VendorFeatureCard';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
 
 type Vehicle = {
   uid: number;
@@ -36,6 +36,18 @@ const VendorCarSelectionPage: React.FC = () => {
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 
+  const fetchVehicles = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/v1/location/${selectedLocation}/vehicles?includeRented=true`,
+        { withCredentials: true }
+      );
+      setVehicles(response.data);
+    } catch (error) {
+      console.error('Failed to fetch vehicles', error);
+    }
+  }, [selectedLocation]);
+
   const handleSelect = (vehicle: Vehicle) => {
     navigate('/vendorcardetail', {
       state: {
@@ -44,23 +56,15 @@ const VendorCarSelectionPage: React.FC = () => {
       },
     });
   };
-  useEffect(() => {
-    const fetchVehicles = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/api/v1/location/${selectedLocation}/vehicles?includeRented=true`,
-          { withCredentials: true }
-        );
-        setVehicles(response.data);
-      } catch (error) {
-        console.error('Failed to fetch vehicles', error);
-      }
-    };
+  const handleVehicleAdded = () => {
+    fetchVehicles(); // Call fetchVehicles to reload the vehicle list
+  };
 
+  useEffect(() => {
     if (selectedLocation) {
       fetchVehicles();
     }
-  }, [selectedLocation]);
+  }, [selectedLocation, fetchVehicles]);
 
   return (
     <MantineProvider>
@@ -76,6 +80,12 @@ const VendorCarSelectionPage: React.FC = () => {
         {/* Main layout container */}
         <Container fluid>
           <Flex>
+            <Flex flex={1} direction='column'>
+              <AddVehicleSection
+                locationId={selectedLocation}
+                onVehicleAdded={handleVehicleAdded}
+              />
+            </Flex>
             {/* Right side container for the Grid */}
             <Flex flex={5} direction='column' style={{ marginLeft: '15px' }}>
               <Grid
