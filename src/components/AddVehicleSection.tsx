@@ -7,7 +7,9 @@ import {
   TextInput,
   Select,
   Button,
+  MantineProvider,
 } from '@mantine/core';
+import { Notifications, notifications } from '@mantine/notifications';
 import axios from 'axios';
 
 interface AddVehicleSectionProps {
@@ -48,6 +50,11 @@ const AddVehicleSection: React.FC<AddVehicleSectionProps> = ({
         { withCredentials: true }
       );
       console.log('Vehicle added successfully:', response.data);
+      notifications.show({
+        title: 'Success!',
+        message: 'Added a new vehicle.',
+        color: 'green',
+      });
       setMake('');
       setModel('');
       setYear('');
@@ -64,79 +71,82 @@ const AddVehicleSection: React.FC<AddVehicleSectionProps> = ({
     }
   };
   return (
-    <Box
-      p='md'
-      w={300}
-      style={{
-        borderWidth: 1,
-        borderColor: '#E9ECEF',
-        borderStyle: 'solid',
-        borderRadius: 8,
-        background: '#fff',
-      }}
-    >
-      <Title order={2}>Add Vehicle</Title>
-      <Divider my='sm' />
-
-      <Flex direction='column' gap='sm'>
-        <TextInput
-          label='Make'
-          value={make}
-          onChange={(event) => setMake(event.currentTarget.value)}
-        />
-        <TextInput
-          label='Model'
-          value={model}
-          onChange={(event) => setModel(event.currentTarget.value)}
-        />
-      </Flex>
-      <Flex gap='sm'>
-        <TextInput
-          label='Year'
-          value={year}
-          onChange={(event) => setYear(event.currentTarget.value)}
-        />
-        <Select
-          style={{ width: '70%' }}
-          label='Type'
-          value={type}
-          onChange={(value) => setType(value)}
-          data={['Compact', 'Midsize', 'Standard']}
-          placeholder='Select Type'
-        />
-      </Flex>
-      <Flex gap='sm'>
-        <TextInput
-          label='Seats'
-          value={seats}
-          onChange={(event) => setSeats(event.currentTarget.value)}
-        />
-        <TextInput
-          label='Doors'
-          value={doors}
-          onChange={(event) => setDoors(event.currentTarget.value)}
-        />
-      </Flex>
-      <Flex gap='sm'>
-        <TextInput
-          label='Color'
-          value={color}
-          onChange={(event) => setColor(event.currentTarget.value)}
-        />
-        <TextInput
-          label='Cost'
-          value={cost}
-          onChange={(event) => setCost(event.currentTarget.value)}
-        />
-      </Flex>
-      <Button
-        style={{ marginTop: '15px' }}
-        disabled={!isFormComplete}
-        onClick={handleSubmit}
+    <MantineProvider>
+      <Notifications />
+      <Box
+        p='md'
+        w={300}
+        style={{
+          borderWidth: 1,
+          borderColor: '#E9ECEF',
+          borderStyle: 'solid',
+          borderRadius: 8,
+          background: '#fff',
+        }}
       >
-        Add
-      </Button>
-    </Box>
+        <Title order={2}>Add Vehicle</Title>
+        <Divider my='sm' />
+
+        <Flex direction='column' gap='sm'>
+          <TextInput
+            label='Make'
+            value={make}
+            onChange={(event) => setMake(event.currentTarget.value)}
+          />
+          <TextInput
+            label='Model'
+            value={model}
+            onChange={(event) => setModel(event.currentTarget.value)}
+          />
+        </Flex>
+        <Flex gap='sm'>
+          <TextInput
+            label='Year'
+            value={year}
+            onChange={(event) => setYear(event.currentTarget.value)}
+          />
+          <Select
+            style={{ width: '70%' }}
+            label='Type'
+            value={type}
+            onChange={(value) => setType(value)}
+            data={['Compact', 'Midsize', 'Standard']}
+            placeholder='Select Type'
+          />
+        </Flex>
+        <Flex gap='sm'>
+          <TextInput
+            label='Seats'
+            value={seats}
+            onChange={(event) => setSeats(event.currentTarget.value)}
+          />
+          <TextInput
+            label='Doors'
+            value={doors}
+            onChange={(event) => setDoors(event.currentTarget.value)}
+          />
+        </Flex>
+        <Flex gap='sm'>
+          <TextInput
+            label='Color'
+            value={color}
+            onChange={(event) => setColor(event.currentTarget.value)}
+          />
+          <TextInput
+            label='Cost'
+            value={cost}
+            onChange={(event) => setCost(event.currentTarget.value)}
+          />
+        </Flex>
+        <Button
+          style={{ marginTop: '15px' }}
+          disabled={!isFormComplete}
+          onClick={handleSubmit}
+        >
+          Add
+        </Button>
+      </Box>
+    </MantineProvider>
   );
 };
 
