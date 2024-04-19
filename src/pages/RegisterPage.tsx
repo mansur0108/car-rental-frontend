@@ -3,7 +3,7 @@ import axios from 'axios';
 import './RegisterPage.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { Checkbox, Text } from '@mantine/core';
+import { Checkbox } from '@mantine/core';
 
 const RegisterPage: React.FC = () => {
   // State hooks for managing form inputs and register message
